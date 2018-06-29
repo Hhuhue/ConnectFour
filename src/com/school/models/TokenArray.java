@@ -73,9 +73,6 @@ public class TokenArray implements ITokenArray {
         if(!areCoordinatesValid(xPosition, yPosition))
             throw new IndexOutOfBoundsException("Position is invalid : (" +xPosition + ", " + yPosition + ").");
         
-        if(tokenToAdd == null)
-            throw new IllegalArgumentException("The token is null.");
-        
         if(isColumnFull(xPosition))
             throw new UnsupportedOperationException("The column is full.");
         

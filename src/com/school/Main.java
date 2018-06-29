@@ -1,7 +1,6 @@
 package com.school;
 
 import com.school.controller.ConnectFourController;
-import com.school.ui.View;
 
 public class Main {
 

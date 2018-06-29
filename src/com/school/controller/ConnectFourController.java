@@ -3,7 +3,6 @@ package com.school.controller;
 import com.school.interfaces.Controller;
 import com.school.models.Board;
 import com.school.ui.View;
-import java.awt.event.WindowEvent;
 
 public class ConnectFourController implements Controller {
     private final View view;

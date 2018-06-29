@@ -9,11 +9,9 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-import javax.swing.ImageIcon;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,8 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class View extends JFrame implements BoardListener {
-
-    private static final String IMAGE_PATH = "./IMAGES/Connect4/";
 
     private static final long serialVersionUID = 1L;
 
