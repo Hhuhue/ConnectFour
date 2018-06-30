@@ -19,6 +19,7 @@ public class Board {
 
     public Board(int rowCount, int columnCount, int winCount) {
         int bigestValue = (rowCount >= columnCount)? rowCount : columnCount;
+
         if(rowCount < 1 || columnCount < 1 || winCount > bigestValue )
             throw new IllegalArgumentException("Invalid arguments");
         
@@ -45,17 +46,20 @@ public class Board {
         
         int rowIndex = rowCount - columnSizes[columnIndex] - 1;
         
-        Token newToken = new Token(playerTurn, new Point(columnIndex, rowIndex));        
+        Token newToken = new Token(playerTurn, new Point(columnIndex, rowIndex));
         tokenArray.addToken(newToken);
         columnSizes[columnIndex]++;
         fireOnTokenAddedEvent(newToken);
         
-        if(tokenArray.isColumnFull(columnIndex)) 
+        if(tokenArray.isColumnFull(columnIndex)) {
             fireOnColumnFilledEvent(columnIndex);
-        if(isBoardFull())
-            fireOnBoardFull();
+        }
         
-        switchPlayerTurn();
+        if(isBoardFull()){
+            fireOnBoardFull();
+        }
+        
+        playerTurn = newToken.getOppositeType();
         checkForWin(newToken);
     }
     
@@ -91,20 +95,11 @@ public class Board {
     }
 
     private void checkForWin(Token addedToken) {
-        if (getConsecutiveTokenCount(addedToken, Direction.VERTICAL) >= winCount
-            || getConsecutiveTokenCount(addedToken, Direction.HORIZONTAL) >= winCount
-            || getConsecutiveTokenCount(addedToken, Direction.LEFT_DIAGONAL) >= winCount
-            || getConsecutiveTokenCount(addedToken, Direction.RIGHT_DIAGONAL) >= winCount)
-        {
-            fireOnGameFinishedEvent(addedToken);            
-        }
-    }
-
-    private void switchPlayerTurn() {
-        if (playerTurn == TokenType.PLAYER1) {
-            playerTurn = TokenType.PLAYER2;
-        } else {
-            playerTurn = TokenType.PLAYER1;
+        for(Direction direction : Direction.values()){
+            if (getConsecutiveTokenCount(addedToken, direction) >= winCount){
+                fireOnGameFinishedEvent(addedToken);
+                break;
+            }
         }
     }
     
@@ -124,23 +119,28 @@ public class Board {
         Point backwardMovement = new Point(fowardMovement.x * -1, fowardMovement.y * -1);
         final int ADDED_TOKEN = 1;
 
-        int sameTokenCount = getConsecutiveTokenCountInDirection(fowardMovement, token) + getConsecutiveTokenCountInDirection(backwardMovement, token) + ADDED_TOKEN;        
+        int sameTokenCount = getConsecutiveTokenCountInDirection(fowardMovement, token) + getConsecutiveTokenCountInDirection(backwardMovement, token) + ADDED_TOKEN;
         return sameTokenCount;
     }
     
-    private int getConsecutiveTokenCountInDirection(Point movement, Token addedToken)
-    {
+    private int getConsecutiveTokenCountInDirection(Point movement, Token addedToken){
         int sameTokenCount = 0;
         int currentX = addedToken.getPosition().x + movement.x;        
         int currentY = addedToken.getPosition().y + movement.y;
-        while(tokenArray.areCoordinatesValid(currentX, currentY) && tokenArray.hasTokenAt(currentX, currentY) 
-              && tokenArray.getTokenAt(currentX, currentY).getType() == addedToken.getType())
-        {
+
+        while(isTokenOfSameType(currentX, currentY, addedToken)){
             sameTokenCount++;
             currentX += movement.x;        
             currentY += movement.y;
         }
+
         return sameTokenCount;
+    }
+
+    private boolean isTokenOfSameType(int currentX, int currentY, Token addedToken){
+        return tokenArray.areCoordinatesValid(currentX, currentY) && 
+               tokenArray.hasTokenAt(currentX, currentY) && 
+               tokenArray.getTokenAt(currentX, currentY).getType() == addedToken.getType();
     }
     
     private enum Direction{

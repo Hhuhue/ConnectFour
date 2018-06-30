@@ -36,6 +36,10 @@ public class Token {
     public TokenType getType(){
         return type;
     }
+
+    public TokenType getOppositeType(){
+        return (type == TokenType.PLAYER1)? TokenType.PLAYER2 : TokenType.PLAYER1; 
+    }
     
     public ImageIcon getImage() {
         return this.image;

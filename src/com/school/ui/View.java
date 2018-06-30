@@ -105,8 +105,8 @@ public class View extends JFrame implements BoardListener {
         this.revalidate();
     }
     
-    public void defineTurn(Token.TokenType playerTurn){
-        if(!message.getText().contains("won") && !message.getText().contains("Game")){            
+    private void defineTurn(Token.TokenType playerTurn){
+        if(!message.getText().contains("won") && !message.getText().contains("Game")){
             if(playerTurn == TokenType.PLAYER1){
                 message.setText("Player 1 Turn");
             }
@@ -149,6 +149,7 @@ public class View extends JFrame implements BoardListener {
     public void onTokenAdded(Token token) {
         System.out.println("On token added.");
         this.placeHolders[token.getPosition().x][token.getPosition().y].setImageIcon(token.getImage());
+        defineTurn(token.getOppositeType());
     }
 
     @Override

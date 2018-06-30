@@ -24,7 +24,6 @@ public class ConnectFourController implements Controller {
     @Override
     public void addToken(int columnIndex) {
         this.board.addToken(columnIndex);
-        view.defineTurn(board.getPlayerTurn());
     }
 
     @Override
